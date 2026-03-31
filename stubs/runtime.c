@@ -34,6 +34,12 @@ int asyncjmp_rt_start(int(main)(int argc, char **argv), int argc, char **argv)
             asyncify_start_rewind(asyncify_buf);
             continue;
         }
+        // Handle async web API unwind - uses separate buffer from setjmp
+        if ((asyncify_buf = async_web_api_handle_unwind()) != NULL)
+        {
+            asyncify_start_rewind(asyncify_buf);
+            continue;
+        }
 
         break;
     }
